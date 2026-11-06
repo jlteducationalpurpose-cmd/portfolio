@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EGO_CORE // Jewel Lyn Treash T. Camit - Personal Webpage</title>
+  <!-- Three.js for 3D Cyber Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              bg: '#020617',
+              card: '#09112a',
+              border: '#1d4ed8',
+              primary: '#2563eb',
+              cyan: '#06b6d4',
+              accent: '#3b82f6',
+              glow: '#38bdf8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Fira+Code:wght@600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden !important;
+      font-family: 'Rajdhani', sans-serif;
+      background-color: #020617;
+      color: #f8fafc;
+      font-size: 18px;
+    }
+
+    .font-cyber {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .font-code {
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* Scanlines */
+    .scanlines {
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.35) 50%
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Grid Overlay */
+    .cyber-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(30, 58, 138, 0.22) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 58, 138, 0.22) 1px, transparent 1px);
+    }
+
+    .clip-cyber-lg {
+      clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+    }
+
+    .clip-corner-sm {
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    .glow-cyan {
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+    }
+
+    .glow-blue {
+      box-shadow: 0 0 25px rgba(37, 99, 235, 0.6);
+    }
+
+    .text-glow-cyan {
+      text-shadow: 0 0 15px rgba(6, 182, 212, 0.9);
+    }
+
+    .text-glow-blue {
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.9);
+    }
+
+    .page-view {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.97) translateY(8px);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .page-view.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    .page-view::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="relative w-screen h-screen h-[100dvh] overflow-hidden flex flex-col justify-between p-3 sm:p-5 select-none bg-cyber-bg cyber-grid">
+
+  <!-- 3D Canvas Background -->
+  <canvas id="three-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+  <div class="scanlines absolute inset-0 z-10"></div>
+
+  <!-- HEADER HUD BAR -->
+  <header class="relative z-20 flex justify-between items-center bg-cyber-card/95 border-2 border-cyber-border clip-corner-sm px-4 sm:px-6 py-3 backdrop-blur-md glow-blue">
+    <div class="flex items-center space-x-3">
+      <div class="w-4 h-4 bg-cyber-cyan rounded-full animate-ping"></div>
+      <div class="flex flex-col">
+        <span class="font-cyber font-black text-lg sm:text-xl tracking-widest text-cyber-cyan text-glow-cyan">
+          JEWEL_LYN <span class="text-sm text-blue-300 font-bold">// PORTFOLIO</span>
+        </span>
+        <span class="text-xs font-code text-blue-200 font-bold">BSIT / UNIVERSITY OF THE CORDILLERAS</span>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS (2 PAGES) -->
+    <nav class="hidden lg:flex space-x-2 font-cyber text-sm font-bold">
+      <button onclick="switchPage(0)" class="nav-btn px-4 py-2 border border-cyber-border hover:border-cyber-cyan hover:bg-cyber-primary/30 transition clip-corner-sm text-cyan-300 cursor-pointer">01. HOME</button>
+      <button onclick="switchPage(1)" class="nav-btn px-4 py-2 border border-cyber-border hover:border-cyber-cyan hover:bg-cyber-primary/30 transition clip-corner-sm text-gray-300 cursor-pointer">02. PERSONAL INFORMATION</button>
+    </nav>
+
+    <div class="flex items-center space-x-3 text-sm font-cyber text-blue-200">
+      <span class="hidden sm:inline-block border border-blue-500 bg-blue-950 px-3 py-1 clip-corner-sm text-cyan-300 font-extrabold">BSIT-1</span>
+      <span id="page-num-badge" class="bg-cyber-cyan text-black font-black px-3 py-1 clip-corner-sm text-sm">PAGE 1 / 2</span>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="relative z-20 flex-1 my-3 overflow-hidden flex items-center justify-center">
+
+    <!-- PAGE 01: HOME / ABOUT ME -->
+    <section id="page-0" class="page-view active w-full h-full">
+      <div class="w-full max-w-7xl h-[82vh] bg-cyber-card/95 border-2 border-cyber-border p-6 sm:p-10 md:p-12 clip-cyber-lg backdrop-blur-2xl glow-blue flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 my-auto">
+        
+        <!-- INTRO & TEXT -->
+        <div class="flex-1 text-center md:text-left space-y-5">
+          <div class="text-cyber-cyan font-cyber text-xs sm:text-sm font-black tracking-widest uppercase">
+            // SYSTEM INITIALIZATION: ACTIVE NODE
+          </div>
+
+          <div>
+            <h1 class="text-3xl sm:text-4xl md:text-6xl font-black font-cyber tracking-wider text-white text-glow-blue uppercase mt-1 leading-tight">
+              Jewel Lyn Treash T. Camit
+            </h1>
+          </div>
+
+          <div class="space-y-3 font-code text-sm sm:text-base">
+            <p class="text-gray-100 font-bold">
+              Building logic, refining syntax, and executing web architecture step by step.
+            </p>
+            <p class="text-gray-300 leading-relaxed text-xs sm:text-sm">
+              An aspiring IT specialist based in the mountains of Benguet, currently immersed in foundational programming and system design at the University of the Cordilleras.
+            </p>
+          </div>
+
+          <!-- ABOUT ME & PERSONAL INFORMATION BUTTONS -->
+          <div class="pt-2 flex flex-wrap justify-center md:justify-start gap-4 font-cyber font-black">
+            <button onclick="openAboutModal()" class="bg-cyber-primary hover:bg-blue-500 text-white px-6 py-3.5 clip-corner-sm transition glow-blue flex items-center space-x-2 cursor-pointer text-sm sm:text-base">
+              <span>About me</span>
+            </button>
+            <button onclick="switchPage(1)" class="border-2 border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan/20 px-6 py-3.5 clip-corner-sm transition cursor-pointer text-sm sm:text-base">
+              Personal information ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- PROFILE PHOTO -->
+        <div class="relative group w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 shrink-0 clip-cyber-lg border-2 border-cyber-cyan glow-cyan overflow-hidden cursor-pointer" onclick="openImageModal('Personal Profile Photo', 'images/profile.jpg', 'Official Personal Profile Photo')">
+          <img id="cover-photo-img" src="images/profile.jpg" alt="Personal Avatar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+          <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center font-cyber text-xs text-cyber-cyan">
+            <span class="font-extrabold">[ PROFILE PHOTO ]</span>
+            <span class="bg-black/90 px-2.5 py-0.5 clip-corner-sm border border-cyber-cyan font-bold">ZOOM</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PAGE 02: PERSONAL INFORMATION & ACADEMIC RECORDS -->
+    <section id="page-1" class="page-view w-full h-full">
+      <div class="w-full max-w-7xl h-[82vh] bg-cyber-card/95 border-2 border-cyber-border p-5 sm:p-8 clip-cyber-lg backdrop-blur-2xl glow-blue flex flex-col justify-between my-auto">
+        
+        <div class="flex justify-between items-center border-b-2 border-cyber-border pb-3 shrink-0">
+          <h2 class="font-cyber font-black text-xl sm:text-2xl md:text-3xl text-cyber-cyan text-glow-cyan">Personal Information & School Records</h2>
+          <button onclick="switchPage(0)" class="text-xs sm:text-sm font-cyber font-bold bg-blue-950 border-2 border-blue-600 px-4 py-1.5 clip-corner-sm text-gray-200 hover:border-cyber-cyan">
+            Back to cover ➔
+          </button>
+        </div>
+
+        <!-- SIDE-BY-SIDE SPLIT: PERSONAL INFO + SCHOOL HISTORY -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto py-2">
+          
+          <!-- LEFT: PERSONAL INFORMATION TABLE -->
+          <div class="bg-slate-900/90 border-2 border-cyber-border clip-corner-sm p-4 sm:p-5 flex flex-col justify-between space-y-3">
+            <span class="text-xs font-cyber text-cyber-cyan font-black tracking-widest block uppercase">// PERSONAL DETAILS</span>
+            
+            <div class="divide-y divide-cyber-border/40 font-cyber text-xs sm:text-sm">
+              <div class="py-2.5 flex justify-between items-center">
+                <span class="text-gray-400 font-bold uppercase">FULL NAME</span>
+                <span class="text-white font-black text-sm">Jewel Lyn Treash T. Camit</span>
+              </div>
+              <div class="py-2.5 flex justify-between items-center">
+                <span class="text-gray-400 font-bold uppercase">PHONE NUMBER</span>
+                <span class="text-cyber-cyan font-extrabold">09929664133</span>
+              </div>
+              <div class="py-2.5 flex justify-between items-center">
+                <span class="text-gray-400 font-bold uppercase">ADDRESS</span>
+                <span class="text-white font-bold text-xs sm:text-sm">Tuba, Benguet</span>
+              </div>
+              <div class="py-2.5 flex justify-between items-center">
+                <span class="text-gray-400 font-bold uppercase">DATE OF BIRTH</span>
+                <span class="text-white font-extrabold">December 01, 2007</span>
+              </div>
+              <div class="py-2.5 flex justify-between items-center">
+                <span class="text-gray-400 font-bold uppercase">EMAIL ADDRESS</span>
+                <span class="text-cyan-300 font-bold text-xs">jewellyntreash@gmail.com</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: EDUCATIONAL ATTAINMENT -->
+          <div class="bg-slate-900/90 border-2 border-cyber-border clip-corner-sm p-4 sm:p-5 flex flex-col justify-between space-y-3">
+            <span class="text-xs font-cyber text-cyber-cyan font-black tracking-widest block uppercase">// EDUCATIONAL ATTAINMENT</span>
+            
+            <div class="space-y-3 font-cyber">
+              <div class="border-l-4 border-cyber-cyan pl-3">
+                <span class="text-[10px] text-gray-400 font-bold block uppercase">PRIMARY EDUCATION (2019–2020)</span>
+                <h4 class="font-extrabold text-white text-sm">Cypress Christian Elementary School</h4>
+              </div>
+              <div class="border-l-4 border-cyber-cyan pl-3">
+                <span class="text-[10px] text-gray-400 font-bold block uppercase">SECONDARY EDUCATION (2022–2023)</span>
+                <h4 class="font-extrabold text-white text-sm">Tuba National High School</h4>
+              </div>
+              <div class="border-l-4 border-cyber-cyan pl-3">
+                <span class="text-[10px] text-gray-400 font-bold block uppercase">SENIOR HIGH SCHOOL (2025–2026)</span>
+                <h4 class="font-extrabold text-white text-sm">University of the Cordilleras</h4>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DOCUMENT PROOFS QUICK BUTTONS (GRAD PIC, REG FORM, ID) -->
+        <div class="grid grid-cols-3 gap-3 shrink-0">
+          <button onclick="openImageModal('Graduation Recognition', 'images/senior.jpg', 'SHS Graduation Recognition Document')" class="bg-cyber-card border-2 border-cyber-cyan p-3 text-center text-cyan-300 font-bold text-xs clip-corner-sm cursor-pointer hover:bg-cyber-cyan/20">
+            GRAD RECOGNITION / PIC
+          </button>
+          <button onclick="openImageModal('UC Registration Form', 'images/reg.jpg', 'Official Registration Form')" class="bg-cyber-card border-2 border-cyber-cyan p-3 text-center text-cyan-300 font-bold text-xs clip-corner-sm cursor-pointer hover:bg-cyber-cyan/20">
+            REG FORM PROOF
+          </button>
+          <button onclick="openImageModal('UC Student ID', 'images/id.jpg', 'Official Student ID')" class="bg-cyber-card border-2 border-cyber-cyan p-3 text-center text-cyan-300 font-bold text-xs clip-corner-sm cursor-pointer hover:bg-cyber-cyan/20">
+            STUDENT ID PROOF
+          </button>
+        </div>
+
+        <div class="text-center text-xs sm:text-sm font-cyber text-gray-300 font-bold border-t-2 border-cyber-border pt-2 shrink-0">
+          BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY // UNIVERSITY OF THE CORDILLERAS
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER NAVIGATION DOCK -->
+  <footer class="relative z-20 flex justify-between items-center bg-cyber-card/95 border-2 border-cyber-border clip-corner-sm px-4 sm:px-6 py-3 backdrop-blur-md glow-blue">
+    <button id="prev-btn" onclick="prevPage()" class="font-cyber text-xs sm:text-sm font-black bg-cyber-card hover:bg-cyber-primary/30 border-2 border-cyber-border hover:border-cyber-cyan text-cyber-cyan px-4 sm:px-6 py-2.5 clip-corner-sm transition cursor-pointer">
+      ◄ PREV
+    </button>
+
+    <div class="flex space-x-2.5">
+      <span class="page-dot w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-cyber-cyan glow-cyan cursor-pointer" onclick="switchPage(0)"></span>
+      <span class="page-dot w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-gray-600 cursor-pointer" onclick="switchPage(1)"></span>
+    </div>
+
+    <button id="next-btn" onclick="nextPage()" class="font-cyber text-xs sm:text-sm font-black bg-cyber-primary hover:bg-blue-500 text-white px-5 sm:px-7 py-2.5 clip-corner-sm transition glow-blue cursor-pointer">
+      NEXT ►
+    </button>
+  </footer>
+
+  <!-- ABOUT ME MODAL -->
+  <div id="about-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-cyber-card border-2 border-cyber-cyan p-5 sm:p-8 max-w-2xl w-full clip-cyber-lg glow-cyan relative space-y-4 my-auto">
+      <div class="flex justify-between items-center border-b-2 border-cyber-border pb-3">
+        <h3 class="font-cyber font-black text-lg text-cyber-cyan">ABOUT ME // JEWEL LYN</h3>
+        <button onclick="closeModal('about-modal')" class="text-gray-300 hover:text-white font-cyber text-xs sm:text-sm font-bold cursor-pointer">[ CLOSE X ]</button>
+      </div>
+      <div class="space-y-3 font-code text-sm text-gray-200">
+        <p class="font-bold text-cyan-300">"Building logic, refining syntax, and executing web architecture."</p>
+        <p class="leading-relaxed">
+          I am Jewel Lyn Treash T. Camit, an 18-year-old BSIT 1st Year student residing in KM 12 Lasong Tadiangan, Tuba, Benguet, studying at the University of the Cordilleras.
+        </p>
+        <p class="leading-relaxed">
+          My interests span across writing clean code, exploring foundational software development, and pursuing a future in cybersecurity. Outside the terminal, you can find me enjoying moto rides, camping trips, and youth fellowship.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROOF IMAGE MODAL -->
+  <div id="image-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-cyber-card border-2 border-cyber-cyan p-5 sm:p-8 max-w-4xl w-full clip-cyber-lg glow-cyan relative space-y-4 my-auto">
+      <div class="flex justify-between items-center border-b-2 border-cyber-border pb-3">
+        <h3 id="modal-title" class="font-cyber font-black text-base sm:text-xl text-cyber-cyan">IMAGE PROOF DOCUMENTATION</h3>
+        <button onclick="closeModal('image-modal')" class="text-gray-300 hover:text-white font-cyber text-xs sm:text-sm font-bold cursor-pointer">[ CLOSE X ]</button>
+      </div>
+      <div class="relative max-h-[60vh] overflow-hidden clip-corner-sm border-2 border-cyber-border">
+        <img id="modal-img" src="" alt="Proof Preview" class="w-full h-auto max-h-[55vh] object-contain mx-auto">
+      </div>
+      <p id="modal-desc" class="text-xs sm:text-base text-gray-200 text-center font-cyber font-bold"></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentPage = 0;
+  const totalPages = 2;
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playSynthSound(freq, duration) {
+    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  }
+
+  function updatePageUI() {
+    playSynthSound(580, 0.12);
+    document.querySelectorAll('.page-view').forEach((page, index) => {
+      if (index === currentPage) { page.classList.add('active'); } else { page.classList.remove('active'); }
+    });
+    document.getElementById('page-num-badge').innerText = `PAGE ${currentPage + 1} / ${totalPages}`;
+    document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+      if (index === currentPage) {
+        btn.className = 'nav-btn px-4 py-2 border-2 border-cyber-cyan bg-cyber-primary/40 transition clip-corner-sm text-cyan-300 glow-cyan font-black cursor-pointer';
+      } else {
+        btn.className = 'nav-btn px-4 py-2 border border-cyber-border hover:border-cyber-cyan hover:bg-cyber-primary/20 transition clip-corner-sm text-gray-300 cursor-pointer';
+      }
+    });
+    document.querySelectorAll('.page-dot').forEach((dot, index) => {
+      if (index === currentPage) {
+        dot.className = 'page-dot w-4 h-4 rounded-full bg-cyber-cyan glow-cyan cursor-pointer';
+      } else {
+        dot.className = 'page-dot w-4 h-4 rounded-full bg-gray-600 cursor-pointer';
+      }
+    });
+    document.getElementById('prev-btn').style.opacity = currentPage === 0 ? '0.4' : '1';
+    document.getElementById('next-btn').style.opacity = currentPage === totalPages - 1 ? '0.4' : '1';
+  }
+
+  function switchPage(pageIndex) {
+    if (pageIndex >= 0 && pageIndex < totalPages) { currentPage = pageIndex; updatePageUI(); }
+  }
+  function nextPage() { if (currentPage < totalPages - 1) { currentPage++; updatePageUI(); } }
+  function prevPage() { if (currentPage > 0) { currentPage--; updatePageUI(); } }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') nextPage();
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevPage();
+  });
+
+  function openAboutModal() {
+    playSynthSound(780, 0.15);
+    document.getElementById('about-modal').classList.remove('opacity-0', 'pointer-events-none');
+  }
+
+  function openImageModal(title, src, desc) {
+    playSynthSound(780, 0.15);
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal-desc').innerText = desc;
+    document.getElementById('image-modal').classList.remove('opacity-0', 'pointer-events-none');
+  }
+
+  function closeModal(modalId) {
+    playSynthSound(320, 0.1);
+    document.getElementById(modalId).classList.add('opacity-0', 'pointer-events-none');
+  }
+
+  // Three.js 3D Cyber Engine
+  const canvas = document.getElementById('three-canvas');
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const outerGeo = new THREE.IcosahedronGeometry(3.2, 1);
+  const outerMat = new THREE.MeshBasicMaterial({ color: 0x1d4ed8, wireframe: true, transparent: true, opacity: 0.35 });
+  const outerMesh = new THREE.Mesh(outerGeo, outerMat);
+  scene.add(outerMesh);
+
+  const innerGeo = new THREE.IcosahedronGeometry(1.8, 0);
+  const innerMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.75 });
+  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+  scene.add(innerMesh);
+
+  const particleCount = 180;
+  const particleGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount * 3; i++) { positions[i] = (Math.random() - 0.5) * 16; }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({ size: 0.04, color: 0x38bdf8, transparent: true, opacity: 0.8 });
+  const particleSystem = new THREE.Points(particleGeo, particleMat);
+  scene.add(particleSystem);
+
+  camera.position.z = 5.8;
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 0.6;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.6;
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    outerMesh.rotation.x += 0.0025; outerMesh.rotation.y += 0.0045;
+    innerMesh.rotation.x -= 0.0035; innerMesh.rotation.y -= 0.0055;
+    particleSystem.rotation.y += 0.001;
+    scene.rotation.y += (mouseX - scene.rotation.y) * 0.05;
+    scene.rotation.x += (-mouseY - scene.rotation.x) * 0.05;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+</body>
+</html>
