@@ -1,555 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CRIMSON_CORE // Jewel Lyn Treash T. Camit - Personal Webpage</title>
-  <!-- Three.js for 3D Cyber Engine -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            crimson: {
-              bg: '#040102',
-              card: '#120306',
-              surface: '#1b0509',
-              border: '#b91c1c',
-              primary: '#dc2626',
-              bright: '#ef4444',
-              neon: '#ff2a55',
-              glow: '#f87171'
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Fira+Code:wght@600;700&display=swap');
-
-    * {
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden !important;
-      font-family: 'Rajdhani', sans-serif;
-      background-color: #040102;
-      color: #f8fafc;
-      font-size: 18px;
-    }
-
-    .font-cyber {
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    .font-code {
-      font-family: 'Fira Code', monospace;
-    }
-
-    /* Scanlines & Vignette */
-    .scanlines {
-      background: 
-        radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.78) 100%),
-        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
-      background-size: 100% 100%, 100% 4px;
-      pointer-events: none;
-    }
-
-    /* Crimson Tactical Grid */
-    .cyber-grid {
-      background-size: 38px 38px;
-      background-image: 
-        linear-gradient(to right, rgba(220, 38, 38, 0.16) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(220, 38, 38, 0.16) 1px, transparent 1px);
-    }
-
-    .clip-cyber-lg {
-      clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
-    }
-
-    .clip-corner-sm {
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-    }
-
-    .glow-neon {
-      box-shadow: 0 0 38px rgba(255, 42, 85, 0.65), inset 0 0 20px rgba(255, 42, 85, 0.3);
-    }
-
-    .glow-crimson {
-      box-shadow: 0 0 40px rgba(185, 28, 28, 0.75), inset 0 0 28px rgba(220, 38, 38, 0.2);
-    }
-
-    .text-glow-neon {
-      text-shadow: 0 0 20px rgba(255, 42, 85, 0.95);
-    }
-
-    .text-glow-red {
-      text-shadow: 0 0 30px rgba(239, 68, 68, 0.95);
-    }
-
-    .page-view {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.96) translateY(10px);
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
-
-    .page-view.active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1) translateY(0);
-    }
-
-    .page-view::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17414a;--soft:#46696f;--leaf:#2fa36b;--mint:#7ddf9b;--pink:#ff8fb7;--sun:#ffc94d;--sky:#58b8f2;--glass:rgba(255,255,255,.74);
+--head:'Mochiy Pop One','Trebuchet MS',sans-serif;--body:'Zen Maru Gothic','Segoe UI',sans-serif;--fs:clamp(12px,1.95vh,18px)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;color:var(--ink);font:700 var(--fs)/1.4 var(--body);background:#8fd3f7}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+/* ---------- SCENE ---------- */
+#scene,#petals{position:fixed;inset:0;pointer-events:none}
+#scene{z-index:0;background:linear-gradient(#4fb3f0 0%,#8fd6f7 38%,#d5f1fb 62%,#fff1d6 80%)}
+#petals{z-index:6}
+.sun{position:absolute;top:5vh;right:12vw;width:24vh;height:24vh;border-radius:50%;background:radial-gradient(#fff 0 22%,#fff6bf 38%,rgba(255,236,140,0) 70%)}
+.rays{position:absolute;inset:-20vh -10vw auto auto;width:120vw;height:110vh;transform-origin:88% 12%;background:repeating-conic-gradient(from 170deg at 88% 12%,rgba(255,255,255,.28) 0 3deg,transparent 3deg 10deg);-webkit-mask-image:radial-gradient(circle at 88% 12%,#000,transparent 65%);mask-image:radial-gradient(circle at 88% 12%,#000,transparent 65%);animation:sway 14s ease-in-out infinite alternate}
+@keyframes sway{to{transform:rotate(6deg)}}
+.layer{position:absolute;left:0;right:0;background-repeat:repeat-x;animation:pan calc(var(--d)/var(--k,1)) linear infinite}
+@keyframes pan{to{background-position-x:calc(-1 * var(--w))}}
+.cloud1{top:6vh;height:20vh;--d:90s;--w:640px;background-size:640px 100%;opacity:.95;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='160' viewBox='0 0 640 160'%3E%3Cg fill='%23cfe6f7'%3E%3Cellipse cx='150' cy='112' rx='120' ry='30'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Cellipse cx='130' cy='96' rx='100' ry='34'/%3E%3Ccircle cx='170' cy='64' r='38'/%3E%3Ccircle cx='230' cy='74' r='44'/%3E%3Cellipse cx='280' cy='98' rx='90' ry='30'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Cellipse cx='500' cy='60' rx='70' ry='22'/%3E%3Ccircle cx='520' cy='42' r='26'/%3E%3C/g%3E%3C/svg%3E")}
+.cloud2{top:24vh;height:14vh;--d:140s;--w:520px;background-size:520px 100%;opacity:.8;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='110' viewBox='0 0 520 110'%3E%3Cg fill='%23fff'%3E%3Cellipse cx='120' cy='70' rx='90' ry='24'/%3E%3Ccircle cx='150' cy='46' r='30'/%3E%3Ccircle cx='200' cy='56' r='34'/%3E%3Cellipse cx='400' cy='60' rx='70' ry='20'/%3E%3Ccircle cx='420' cy='42' r='22'/%3E%3C/g%3E%3C/svg%3E")}
+.mt1{bottom:22vh;height:30vh;--d:240s;--w:900px;background-size:900px 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200' viewBox='0 0 800 200' preserveAspectRatio='none'%3E%3Cpath fill='%23b9d9f2' d='M0 200V120Q80 40 160 110T300 90Q380 20 470 100T620 80Q700 30 800 120V200Z'/%3E%3C/svg%3E")}
+.mt2{bottom:16vh;height:26vh;--d:160s;--w:700px;background-size:700px 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200' viewBox='0 0 800 200' preserveAspectRatio='none'%3E%3Cpath fill='%2388c4d3' d='M0 200V140Q120 60 220 130T420 110Q520 50 620 120T800 140V200Z'/%3E%3C/svg%3E")}
+.hill{bottom:0;height:22vh;--d:100s;--w:800px;background-size:800px 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200' viewBox='0 0 800 200' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2362c796'/%3E%3Cstop offset='1' stop-color='%232a8c64'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0 200V120Q100 80 200 115T400 105Q500 70 600 110T800 120V200Z'/%3E%3C/svg%3E")}
+.pines{bottom:13vh;height:15vh;--d:60s;--w:520px;background-size:520px 100%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120' preserveAspectRatio='none'%3E%3Cg fill='%23238a66'%3E%3Cpolygon points='30,20 48,70 12,70'/%3E%3Cpolygon points='30,45 54,100 6,100'/%3E%3Cpolygon points='110,50 124,85 96,85'/%3E%3Cpolygon points='110,68 130,115 90,115'/%3E%3Cpolygon points='170,8 190,62 150,62'/%3E%3Cpolygon points='170,38 196,100 144,100'/%3E%3Cpolygon points='250,40 264,78 236,78'/%3E%3Cpolygon points='250,58 270,112 230,112'/%3E%3Cpolygon points='320,24 338,72 302,72'/%3E%3Cpolygon points='320,48 344,104 296,104'/%3E%3Cpolygon points='375,56 387,88 363,88'/%3E%3Cpolygon points='375,70 393,112 357,112'/%3E%3C/g%3E%3C/svg%3E")}
+body.loading{--k:7}
+.petal{position:absolute;top:-5vh;width:calc(1.5vh*var(--s));height:calc(1.2vh*var(--s));border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffe0ec,var(--pink));opacity:.92;animation:fall linear infinite}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(540deg)}}
+/* ---------- APP ---------- */
+.app{position:relative;z-index:2;height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding:2vh 3vw 3vh;opacity:0;transition:opacity .9s .1s}
+.ready .app{opacity:1}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font:400 clamp(20px,3.8vh,34px)/1 var(--head);color:#fff;-webkit-text-stroke:.2em var(--ink);paint-order:stroke fill;filter:drop-shadow(.05em .07em 0 var(--pink))}
+nav{display:flex;gap:6px;padding:5px;border-radius:99px;background:var(--glass);border:3px solid #fff;box-shadow:0 6px 18px rgba(30,90,100,.2);backdrop-filter:blur(8px)}
+nav button{border:0;background:none;padding:.5em 1.15em;border-radius:99px;color:var(--soft)}
+nav button:hover{color:var(--ink)}
+nav button[aria-current=page]{background:linear-gradient(135deg,var(--leaf),#59c9a0);color:#fff;box-shadow:0 3px 10px rgba(47,163,107,.5)}
+.contact{padding:.45em 1.2em;border-radius:99px;background:var(--pink);color:#fff;text-decoration:none;border:3px solid #fff;box-shadow:0 5px 14px rgba(255,143,183,.5)}
+.contact:hover{filter:brightness(1.07)}
+.l-short{display:none}
+main{position:relative;min-height:0;margin:1.6vh 0}
+.page{position:absolute;inset:0;display:none;min-height:0}
+.page.on{display:grid;animation:in .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05}
+h2{font-size:clamp(18px,3.8vh,32px);margin-bottom:1.6vh}
+h2::after{content:"";display:block;width:2.4em;height:.28em;margin-top:.5vh;border-radius:9px;background:linear-gradient(90deg,var(--pink),var(--sun))}
+.panel{background:var(--glass);border:3px solid #fff;border-radius:26px;box-shadow:0 10px 30px rgba(30,90,100,.22);padding:2.2vh 1.6vw;min-height:0;display:flex;flex-direction:column;backdrop-filter:blur(10px)}
+.ph{position:relative;background:linear-gradient(135deg,#bfeee0,#e3f6ff);overflow:hidden}
+.ph::after{content:attr(data-ph);position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:10px;color:var(--soft);font-size:.8em}
+.ph img{position:relative;z-index:1;width:100%;height:100%;display:block}
+.ph img.missing{visibility:hidden}
+/* HOME */
+#home{grid-template-columns:1.1fr 1fr;gap:2vw;align-items:center}
+.hi{display:inline-block;background:#fff;border-radius:99px;padding:.3em 1.1em;margin-bottom:1.6vh;box-shadow:0 4px 12px rgba(30,90,100,.2);color:var(--leaf)}
+#home h1{font-size:clamp(38px,10.4vh,116px);color:#fff;-webkit-text-stroke:.16em var(--ink);paint-order:stroke fill;filter:drop-shadow(.04em .06em 0 var(--pink))}
+#home h1 span{display:block}#home h1 .l2{color:var(--sun)}
+.tag{max-width:30em;margin:2.4vh 0;font-size:1.15em;background:var(--glass);border-radius:18px;padding:1.2vh 1.2vw;border:3px solid #fff;backdrop-filter:blur(8px)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2.8vh;max-width:34em}
+.facts b{background:#fff;border-radius:99px;padding:.3em 1em;box-shadow:0 3px 10px rgba(30,90,100,.18)}
+.facts b:nth-child(4n+1){border-bottom:3px solid var(--leaf)}.facts b:nth-child(4n+2){border-bottom:3px solid var(--pink)}.facts b:nth-child(4n+3){border-bottom:3px solid var(--sun)}.facts b:nth-child(4n){border-bottom:3px solid var(--sky)}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:3px solid #fff;font:400 .95em var(--head);padding:.8em 1.5em;border-radius:99px;background:linear-gradient(135deg,var(--leaf),#59c9a0);color:#fff;box-shadow:0 6px 16px rgba(47,163,107,.5);transition:transform .2s}
+.btn.alt{background:linear-gradient(135deg,var(--pink),#ffb18f);box-shadow:0 6px 16px rgba(255,143,183,.55)}
+.btn:hover{transform:translateY(-3px) scale(1.03)}
+.hero{height:100%;min-height:0;position:relative;display:flex;justify-content:center}
+.halo{position:absolute;top:2%;left:50%;width:min(100%,60vh);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,246,190,.55) 60%,transparent)}
+.halo::after{content:"";position:absolute;inset:6%;border-radius:50%;border:3px dashed rgba(255,255,255,.9);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pad{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:80%;height:9vh;border-radius:50%;background:radial-gradient(closest-side,#7ddf9b,#2fa36b 75%,transparent);box-shadow:0 10px 24px rgba(20,90,60,.35)}
+.hero .ph{position:relative;z-index:2;height:97%;margin-bottom:3vh;aspect-ratio:2/3;max-width:100%;background:none;animation:float 5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-1.2vh)}}
+.hero .ph img{object-fit:contain;object-position:bottom;filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 10px 14px rgba(20,60,60,.35))}
+.hero .ph::after{color:var(--ink)}
+.lv{position:absolute;z-index:3;right:2%;top:10%;background:var(--sun);border:3px solid #fff;border-radius:99px;padding:.4em 1em;font:400 .95em var(--head);transform:rotate(7deg);box-shadow:0 5px 12px rgba(30,90,100,.25)}
+/* INFO */
+#info{grid-template-columns:.75fr 1.25fr 1fr;gap:1.4vw}
+.pic{padding:8px;transform:rotate(-2deg)}.pic .ph{height:100%;border-radius:19px}.pic img{object-fit:cover}
+.bio{gap:1.3vh;overflow:hidden}.bio p{color:var(--soft)}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:1vh .8vw;align-content:start}
+.rows div{background:rgba(255,255,255,.8);border-left:5px solid var(--leaf);border-radius:12px;padding:.7vh .7vw;min-width:0}
+.rows div:nth-child(4n+2),.rows div:nth-child(4n+3){border-left-color:var(--pink)}
+.rows div:nth-child(odd):last-child{grid-column:span 2}
+.rows small{display:block;color:var(--leaf);font-size:.8em}
+.rows span{display:block;line-height:1.2;overflow-wrap:anywhere}
+/* ACHIEVEMENTS */
+#ach{grid-template-rows:1.3fr 1fr;gap:1.6vh}
+.schools{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1vw;min-height:0}
+.school{border-radius:24px;overflow:hidden;border:4px solid #fff;min-height:0;display:flex;flex-direction:column;background:#fff;box-shadow:0 10px 26px rgba(30,90,100,.25)}
+.school.now{box-shadow:0 0 0 3px var(--sun),0 10px 26px rgba(255,201,77,.55)}
+.slides{position:relative;flex:1;min-height:0}
+.slides .ph{position:absolute;inset:0;opacity:0;transition:opacity 1s}
+.slides .ph.on{opacity:1}.slides img{object-fit:cover}
+.slides .ph.on img{animation:kb 8s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.15) translate(-2%,-1.5%)}}
+.meta{padding:1vh .8vw}
+.meta b{display:block;color:var(--leaf);font:400 1em var(--head)}
+.meta small{display:block;line-height:1.2}
+.meta em{font-style:normal;color:var(--pink)}
+.awards{display:grid;grid-template-columns:.9fr 1.6fr;gap:1.2vw;min-height:0}
+.awards .panel{padding:1.8vh 1.1vw}
+.awards h3{font-size:1.15em;margin-bottom:1.2vh;color:var(--leaf)}
+.awards ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:1.1vh}
+.awards li{border-left:5px solid var(--sun);padding-left:.7vw;line-height:1.2}
+.awards li small{display:block;color:var(--soft);font-weight:500}
+.awards .reel{padding:0;overflow:hidden}
+.track{display:flex;gap:1vw;height:100%;width:max-content;padding:1.2vh .6vw;animation:reel 24s linear infinite}
+.track .ph{height:100%;aspect-ratio:4/3;border-radius:14px;flex:none;border:3px solid #fff}.track img{object-fit:cover}
+@keyframes reel{to{transform:translateX(-50%)}}
+/* FAMILY */
+#fam{grid-template-columns:.7fr 2.3fr;gap:2vw}
+.side{display:flex;flex-direction:column;justify-content:center;gap:1.4vh}.side p{font-size:1.1em;background:var(--glass);border:3px solid #fff;border-radius:18px;padding:1.2vh 1vw}
+.stage{display:grid;grid-template-rows:1fr auto;gap:1.4vh;min-height:0}
+.frame{position:relative;border-radius:26px;overflow:hidden;min-height:0;border:5px solid #fff;box-shadow:0 12px 32px rgba(30,90,100,.3)}
+.frame .ph{position:absolute;inset:0}.frame img{object-fit:cover}
+.cap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:4vh 2vw 2vh;color:#fff;background:linear-gradient(transparent,rgba(12,50,50,.85))}
+.cap h3{font-size:1.5em;margin-bottom:.6vh}
+.arr{position:absolute;top:50%;transform:translateY(-50%);z-index:4;min-width:38px;min-height:38px;width:5.4vh;height:5.4vh;border-radius:50%;border:3px solid #fff;background:var(--pink);color:#fff;font-size:1.1em}
+.arr.p{left:1vw}.arr.n{right:1vw}
+.thumbs{display:flex;gap:.8vw;height:9vh}
+.thumbs button{flex:1;border:4px solid #fff;border-radius:16px;overflow:hidden;padding:0;background:none;opacity:.65;min-width:0}
+.thumbs button[aria-current=true]{border-color:var(--sun);opacity:1}
+.thumbs .ph{height:100%}.thumbs img{object-fit:cover}
+/* FOOTER */
+footer{display:flex;justify-content:center;align-items:center;gap:16px}
+footer button{border:3px solid #fff;background:var(--glass);border-radius:99px;padding:.4em 1.4em;font-family:var(--head);font-weight:400;font-size:.9em;box-shadow:0 5px 14px rgba(30,90,100,.2)}
+footer button:hover{background:var(--leaf);color:#fff}
+footer button:disabled{opacity:.35;pointer-events:none}
+.stg{font:400 .85em var(--head);min-width:8em;text-align:center;background:var(--glass);border-radius:99px;padding:.4em 1em;border:3px solid #fff}
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(closest-side at 50% 46%,rgba(255,255,255,.7),transparent);transition:opacity .8s,transform .8s}
+#loader.out{opacity:0;transform:scale(1.06);pointer-events:none}
+.lbox{text-align:center;width:min(560px,88vw)}
+.lbox small{display:inline-block;background:#fff;border-radius:99px;padding:.3em 1.1em;color:var(--leaf);box-shadow:0 4px 12px rgba(30,90,100,.2)}
+.lbox h1{margin:1.6vh 0 3vh;font-size:clamp(30px,8vh,76px);color:#fff;-webkit-text-stroke:.16em var(--ink);paint-order:stroke fill;filter:drop-shadow(.04em .06em 0 var(--pink));animation:float 3s ease-in-out infinite}
+.lb{position:relative;height:2.6vh;border-radius:99px;background:rgba(255,255,255,.85);border:3px solid #fff;box-shadow:0 4px 14px rgba(30,90,100,.25)}
+.lb i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:99px;background:linear-gradient(90deg,var(--mint),var(--leaf))}
+.lb b{position:absolute;top:50%;left:0;width:3.6vh;height:3vh;margin:-1.5vh 0 0 -1.8vh;border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffe0ec,var(--pink));animation:wob .5s ease-in-out infinite alternate}
+@keyframes wob{to{transform:rotate(40deg) translateY(-3px)}}
+#ltxt{margin-top:1.8vh;color:var(--ink)}
+#lpct{display:block;font:400 1.3em var(--head);color:var(--ink)}
+#skip{position:absolute;right:3vw;top:3vh;background:var(--glass);border:3px solid #fff;border-radius:99px;padding:.35em 1.1em}
+@media (max-width:820px){
+ :root{--fs:clamp(10px,1.7vh,14px)}
+ .app{padding:1.5vh 3vw 2vh}.l-full{display:none}.l-short{display:inline}nav button{padding:.5em .8em}.contact{display:none}
+ #home{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:1vh}.tag,.facts{display:none}.hi{margin-bottom:.8vh}
+ #info{grid-template-columns:1fr;grid-template-rows:.8fr 1.2fr}.pic{display:none}.rows{grid-template-columns:1fr 1fr 1fr}.bio p:nth-of-type(n+3){display:none}
+ .schools{grid-template-columns:1fr 1fr}.meta small{display:none}
+ .awards{grid-template-columns:1fr}.awards .panel:first-child{display:none}
+ #fam{grid-template-columns:1fr;grid-template-rows:auto 1fr}.side p{display:none}
+}
+@media (prefers-reduced-motion:reduce){.layer,.petal,.rays,.halo::after,.hero .ph,.lbox h1,.track{animation:none}}
+</style>
 </head>
-<body>
+<body class="loading">
+<div id="scene" aria-hidden="true">
+  <div class="sun"></div><div class="rays"></div>
+  <div class="layer cloud1"></div><div class="layer cloud2"></div>
+  <div class="layer mt1"></div><div class="layer mt2"></div>
+  <div class="layer hill"></div><div class="layer pines"></div>
+</div>
+<div id="petals" aria-hidden="true"></div>
 
-<div class="relative w-screen h-screen h-[100dvh] overflow-hidden flex flex-col justify-between p-3 sm:p-5 select-none bg-crimson-bg cyber-grid">
-
-  <!-- 3D Canvas Background -->
-  <canvas id="three-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
-  <div class="scanlines absolute inset-0 z-10"></div>
-
-  <!-- HEADER HUD BAR WITH TOP NAVIGATION -->
-  <header class="relative z-20 flex justify-between items-center bg-crimson-card/95 border-2 border-crimson-border clip-corner-sm px-4 sm:px-8 py-3.5 backdrop-blur-xl glow-crimson">
-    <div class="flex items-center space-x-3">
-      <div class="relative flex items-center justify-center w-4 h-4">
-        <span class="absolute w-4 h-4 bg-crimson-neon rounded-full animate-ping opacity-75"></span>
-        <span class="relative w-2.5 h-2.5 bg-crimson-neon rounded-full"></span>
-      </div>
-      <div class="flex flex-col">
-        <span class="font-cyber font-black text-base sm:text-xl tracking-widest text-crimson-neon text-glow-neon">
-          JEWEL_LYN <span class="text-sm text-red-300 font-bold">// PORTFOLIO</span>
-        </span>
-      </div>
-    </div>
-
-    <!-- TOP NAVIGATION BUTTONS (4 PAGES) -->
-    <nav class="hidden md:flex space-x-2 font-cyber text-xs sm:text-sm font-bold">
-      <button onclick="switchPage(0)" class="nav-btn px-4 py-2 border-2 border-crimson-neon bg-crimson-primary/40 transition clip-corner-sm text-rose-200 glow-neon font-black cursor-pointer">01. HOME</button>
-      <button onclick="switchPage(1)" class="nav-btn px-4 py-2 border border-crimson-border hover:border-crimson-neon hover:bg-crimson-primary/25 transition clip-corner-sm text-gray-300 cursor-pointer">02. PERSONAL INFO</button>
-      <button onclick="switchPage(2)" class="nav-btn px-4 py-2 border border-crimson-border hover:border-crimson-neon hover:bg-crimson-primary/25 transition clip-corner-sm text-gray-300 cursor-pointer">03. ACHIEVEMENTS</button>
-      <button onclick="switchPage(3)" class="nav-btn px-4 py-2 border border-red-900 bg-red-950/60 text-red-500 clip-corner-sm cursor-not-allowed opacity-60" title="Locked by System">04. [LOCKED]</button>
-    </nav>
-
-    <div class="flex items-center space-x-3 text-sm font-cyber text-red-200">
-      <span class="hidden sm:inline-block border border-red-600 bg-red-950/90 px-3 py-1.5 clip-corner-sm text-rose-300 font-extrabold text-xs">BSIT-1</span>
-      <span id="page-num-badge" class="bg-crimson-neon text-black font-black px-3.5 py-1.5 clip-corner-sm text-sm">P. 1/3</span>
-    </div>
-  </header>
-
-  <!-- MAIN VIEW CONTAINER -->
-  <main class="relative z-20 flex-1 my-3 overflow-hidden flex items-center justify-center">
-
-    <!-- PAGE 01: HOME -->
-    <section id="page-0" class="page-view active w-full h-full">
-      <div class="w-full max-w-6xl h-[88vh] bg-crimson-card/92 border-2 border-crimson-border p-8 sm:p-14 clip-cyber-lg backdrop-blur-2xl glow-crimson flex flex-col items-center justify-center space-y-8 my-auto relative text-center">
-        
-        <div class="absolute top-5 left-5 w-7 h-7 border-t-2 border-l-2 border-crimson-neon pointer-events-none"></div>
-        <div class="absolute bottom-5 right-5 w-7 h-7 border-b-2 border-r-2 border-crimson-neon pointer-events-none"></div>
-
-        <div class="inline-flex items-center space-x-2.5 border border-crimson-neon/60 bg-black/70 px-5 py-2 clip-corner-sm">
-          <span class="w-3 h-3 bg-crimson-neon rounded-full animate-pulse"></span>
-          <span class="text-crimson-neon font-cyber text-sm font-black tracking-widest uppercase">
-            CRIMSON_CORE // ACTIVE IDENTITY NODE
-          </span>
-        </div>
-
-        <div class="relative p-2.5 border-2 border-crimson-border/80 clip-cyber-lg bg-black/60">
-          <div class="relative group w-72 h-72 sm:w-92 sm:h-92 clip-cyber-lg border-4 border-crimson-neon glow-neon overflow-hidden cursor-pointer" onclick="openImageModal('Personal Profile Photo', 'images/profile.jpg', 'Official Personal Profile Photo')">
-            <img id="cover-photo-img" src="images/profile.jpg" alt="Jewel Lyn Avatar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-red-950/20"></div>
-            <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center font-cyber text-sm text-rose-300">
-              <span class="font-extrabold tracking-wider">[ PROFILE_01 ]</span>
-              <span class="bg-black/95 px-3 py-1 clip-corner-sm border border-crimson-neon font-bold text-crimson-neon">ZOOM PHOTO</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-4 max-w-4xl">
-          <h1 class="text-4xl sm:text-6xl md:text-7xl font-black font-cyber tracking-wider text-white text-glow-red uppercase leading-tight">
-            Jewel Lyn Treash T. Camit
-          </h1>
-          <div class="flex items-center justify-center space-x-4">
-            <div class="h-1.5 w-24 bg-crimson-border"></div>
-            <div class="h-2 w-40 bg-crimson-neon glow-neon"></div>
-            <div class="h-1.5 w-24 bg-crimson-border"></div>
-          </div>
-          <p class="font-code text-base sm:text-lg text-rose-300 font-bold tracking-widest uppercase">
-            University of the Cordilleras // Bachelor of Science in Information Technology
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- PAGE 02: PERSONAL INFORMATION -->
-    <section id="page-1" class="page-view w-full h-full">
-      <div class="w-full max-w-7xl h-[88vh] bg-crimson-card/95 border-2 border-crimson-border p-6 sm:p-8 clip-cyber-lg backdrop-blur-2xl glow-crimson flex flex-col justify-between my-auto relative">
-        
-        <div class="flex justify-between items-center border-b-2 border-crimson-border pb-3 shrink-0">
-          <div class="flex items-center space-x-3">
-            <span class="text-sm font-cyber text-crimson-neon font-black tracking-wide">02 • PERSONAL INFORMATION RECORD</span>
-          </div>
-          <div class="text-xs sm:text-sm font-code text-rose-300 font-bold bg-red-950/80 px-3 py-1 border border-red-600 clip-corner-sm">SECURE PROFILE</div>
-        </div>
-
-        <div class="bg-black/85 border-2 border-crimson-border clip-corner-sm p-4 shrink-0">
-          <span class="text-xs font-cyber text-crimson-neon block tracking-widest font-black uppercase">FULL NAME</span>
-          <h2 class="text-2xl sm:text-3xl font-black font-cyber text-white tracking-wide mt-0.5">Jewel Lyn Treash T. Camit</h2>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-auto">
-          
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">GENDER</span>
-            <span class="text-base sm:text-lg font-bold text-white">Female</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">STATUS</span>
-            <span class="text-base sm:text-lg font-bold text-white">Single</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">AGE</span>
-            <span class="text-base sm:text-lg font-black text-crimson-neon">18</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">BIRTHDAY</span>
-            <span class="text-sm sm:text-base font-bold text-white">December 01, 2007</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">PROGRAM</span>
-            <span class="text-xs sm:text-sm font-bold text-rose-300 leading-tight block">Bachelor of Science in Information Technology</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">COLLEGE</span>
-            <span class="text-xs sm:text-sm font-bold text-white leading-tight block">College of Information Technology & Computer Science</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">YEAR LEVEL</span>
-            <span class="text-base sm:text-lg font-bold text-white">1st Year</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">SCHOOL</span>
-            <span class="text-xs sm:text-sm font-bold text-white">University of the Cordilleras</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">HOBBIES</span>
-            <span class="text-xs sm:text-sm font-bold text-white">Moto Rides, Camping, Coding & Tech Exploration</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">SKILLS</span>
-            <span class="text-xs sm:text-sm font-bold text-white">Python, Java, HTML, Web Architecture</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">ADDRESS</span>
-            <span class="text-xs sm:text-sm font-bold text-white truncate block">KM 12 Tuba, Benguet</span>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border/70 clip-corner-sm p-3.5">
-            <span class="text-[11px] font-cyber text-red-300/80 block uppercase font-black">EMAIL</span>
-            <span class="text-xs sm:text-sm font-bold text-cyan-300 truncate block">jewellyn9@gmail.com</span>
-          </div>
-
-        </div>
-
-        <div class="grid grid-cols-3 gap-3 shrink-0">
-          <div class="bg-black/90 border-2 border-crimson-border clip-corner-sm p-3 text-center">
-            <span class="text-[10px] font-cyber text-red-300/80 block font-bold uppercase">PHONE NUMBER</span>
-            <span class="text-sm sm:text-base font-black text-crimson-neon">09453108244</span>
-          </div>
-          <a href="https://facebook.com" target="_blank" class="bg-crimson-surface border-2 border-crimson-neon clip-corner-sm p-3 text-center text-rose-200 font-cyber font-bold text-sm hover:bg-crimson-neon/25 transition flex items-center justify-center glow-neon">
-            FB: JEWEL LYN
-          </a>
-          <a href="https://instagram.com" target="_blank" class="bg-crimson-surface border-2 border-crimson-neon clip-corner-sm p-3 text-center text-rose-200 font-cyber font-bold text-sm hover:bg-crimson-neon/25 transition flex items-center justify-center glow-neon">
-            IG: @CAMITJEWELLYNTREASH
-          </a>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- PAGE 03: ACHIEVEMENTS & SCHOOLS -->
-    <section id="page-2" class="page-view w-full h-full">
-      <div class="w-full max-w-7xl h-[88vh] bg-crimson-card/95 border-2 border-crimson-border p-6 sm:p-8 clip-cyber-lg backdrop-blur-2xl glow-crimson flex flex-col justify-between my-auto">
-        
-        <div class="flex justify-between items-center border-b-2 border-crimson-border pb-3 shrink-0">
-          <h2 class="font-cyber font-black text-xl sm:text-3xl text-crimson-neon text-glow-neon">03. ACHIEVEMENTS & SCHOOLS TIMELINE</h2>
-          <span class="text-xs sm:text-sm font-cyber font-bold bg-red-950 border-2 border-red-600 px-4 py-1.5 clip-corner-sm text-rose-300">ORIGINAL RECORDS</span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 my-auto py-3">
-          
-          <div class="bg-black/80 border-2 border-crimson-border clip-corner-sm p-5 space-y-3 flex flex-col justify-between">
-            <div>
-              <span class="text-[11px] font-cyber text-red-300/80 block font-black uppercase">PRIMARY EDUCATION (2019–2020)</span>
-              <h3 class="font-black text-white text-base sm:text-lg mt-1">Cypress Christian Elementary School</h3>
-            </div>
-            <div class="space-y-2 font-code text-xs sm:text-sm text-gray-200 border-t-2 border-crimson-border/60 pt-3">
-              <p>★ Elementary Primary Completion</p>
-              <p>★ Foundational Academic Honors</p>
-            </div>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border clip-corner-sm p-5 space-y-3 flex flex-col justify-between">
-            <div>
-              <span class="text-[11px] font-cyber text-red-300/80 block font-black uppercase">SECONDARY EDUCATION (2022–2023)</span>
-              <h3 class="font-black text-white text-base sm:text-lg mt-1">Tuba National High School</h3>
-            </div>
-            <div class="space-y-2 font-code text-xs sm:text-sm text-gray-200 border-t-2 border-crimson-border/60 pt-3">
-              <p>★ Junior High School Completion</p>
-              <p>★ Active Youth Leadership & Participation</p>
-            </div>
-          </div>
-
-          <div class="bg-black/80 border-2 border-crimson-border clip-corner-sm p-5 space-y-3 flex flex-col justify-between">
-            <div>
-              <span class="text-[11px] font-cyber text-red-300/80 block font-black uppercase">SHS (2025–2026) & COLLEGE</span>
-              <h3 class="font-black text-white text-base sm:text-lg mt-1">University of the Cordilleras</h3>
-            </div>
-            <div class="space-y-2 font-code text-xs sm:text-sm text-gray-200 border-t-2 border-crimson-border/60 pt-3">
-              <p class="text-crimson-neon font-bold">★ SHS: HUMSS Strand with Distinction</p>
-              <p class="text-rose-300 font-bold">★ College: BSIT 1st Year Enrolled</p>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="grid grid-cols-3 gap-4 shrink-0">
-          <button onclick="openImageModal('Graduation Recognition', 'images/senior.jpg', 'SHS Graduation Recognition Document')" class="bg-crimson-surface border-2 border-crimson-neon p-3.5 text-center text-rose-200 font-bold text-sm clip-corner-sm cursor-pointer hover:bg-crimson-neon/25 transition glow-neon">
-            GRAD RECOGNITION
-          </button>
-          <button onclick="openImageModal('UC Registration Form', 'images/reg.jpg', 'Official Registration Form')" class="bg-crimson-surface border-2 border-crimson-neon p-3.5 text-center text-rose-200 font-bold text-sm clip-corner-sm cursor-pointer hover:bg-crimson-neon/25 transition glow-neon">
-            REGISTRATION FORM
-          </button>
-          <button onclick="openImageModal('UC Student ID', 'images/id.jpg', 'Official Student ID')" class="bg-crimson-surface border-2 border-crimson-neon p-3.5 text-center text-rose-200 font-bold text-sm clip-corner-sm cursor-pointer hover:bg-crimson-neon/25 transition glow-neon">
-            STUDENT ID PROOF
-          </button>
-        </div>
-
-        <div class="text-center text-xs sm:text-sm font-cyber text-red-200/80 font-bold border-t-2 border-crimson-border pt-2.5 shrink-0">
-          BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY // UNIVERSITY OF THE CORDILLERAS
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE 04: LOCKED (FAMILY & FRIENDS) -->
-    <section id="page-3" class="page-view w-full h-full">
-      <div class="w-full max-w-4xl h-[70vh] bg-black/95 border-2 border-red-600 p-8 clip-cyber-lg glow-crimson flex flex-col items-center justify-center space-y-6 my-auto text-center">
-        <div class="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <h2 class="font-cyber font-black text-2xl sm:text-4xl text-red-500 tracking-widest uppercase">CLASSIFIED // ACCESS DENIED</h2>
-        <p class="font-code text-sm sm:text-base text-gray-300 max-w-lg">
-          This section is currently locked and restricted under institutional privacy protocols. Only authorized nodes (Pages 01 to 03) are currently online for review.
-        </p>
-        <button onclick="switchPage(0)" class="bg-crimson-primary hover:bg-red-700 text-white font-cyber text-xs sm:text-sm font-bold px-6 py-3 clip-corner-sm transition cursor-pointer">
-          [ RETURN TO HOME ]
-        </button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER INDICATOR & NAVIGATION DOCK -->
-  <footer class="relative z-20 flex justify-center items-center bg-crimson-card/95 border-2 border-crimson-border clip-corner-sm px-5 py-3 backdrop-blur-xl glow-crimson">
-    <!-- Desktop Dots (Only 3 active for teacher review) -->
-    <div class="hidden md:flex space-x-4">
-      <span class="page-dot w-4 h-4 rounded-full bg-crimson-neon glow-neon cursor-pointer transition" onclick="switchPage(0)"></span>
-      <span class="page-dot w-4 h-4 rounded-full bg-red-950 border-2 border-crimson-border cursor-pointer transition" onclick="switchPage(1)"></span>
-      <span class="page-dot w-4 h-4 rounded-full bg-red-950 border-2 border-crimson-border cursor-pointer transition" onclick="switchPage(2)"></span>
-    </div>
-
-    <!-- Mobile Quick Nav Buttons -->
-    <div class="flex md:hidden space-x-2 font-cyber text-xs font-bold">
-      <button onclick="switchPage(0)" class="mob-btn px-3 py-1.5 border border-crimson-neon bg-crimson-primary/40 text-rose-200 clip-corner-sm cursor-pointer">01. HOME</button>
-      <button onclick="switchPage(1)" class="mob-btn px-3 py-1.5 border border-crimson-border text-gray-300 clip-corner-sm cursor-pointer">02. INFO</button>
-      <button onclick="switchPage(2)" class="mob-btn px-3 py-1.5 border border-crimson-border text-gray-300 clip-corner-sm cursor-pointer">03. AWARDS</button>
-    </div>
-  </footer>
-
-  <!-- PROOF IMAGE MODAL -->
-  <div id="image-modal" class="fixed inset-0 z-50 bg-black/92 backdrop-blur-lg flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-    <div class="bg-crimson-card border-2 border-crimson-neon p-6 sm:p-8 max-w-4xl w-full clip-cyber-lg glow-neon relative space-y-4 my-auto">
-      <div class="flex justify-between items-center border-b-2 border-crimson-border pb-3">
-        <h3 id="modal-title" class="font-cyber font-black text-base sm:text-xl text-crimson-neon">IMAGE PROOF DOCUMENTATION</h3>
-        <button onclick="closeModal('image-modal')" class="text-gray-300 hover:text-white font-cyber text-xs sm:text-sm font-bold cursor-pointer">[ CLOSE X ]</button>
-      </div>
-      <div class="relative max-h-[60vh] overflow-hidden clip-corner-sm border-2 border-crimson-border bg-black">
-        <img id="modal-img" src="" alt="Proof Preview" class="w-full h-auto max-h-[55vh] object-contain mx-auto">
-      </div>
-      <p id="modal-desc" class="text-sm sm:text-base text-rose-200 text-center font-cyber font-bold"></p>
-    </div>
+<div id="loader" role="status" aria-live="polite">
+  <div class="lbox">
+    <small>Welcome to the world of</small>
+    <h1 id="lname">Loading</h1>
+    <div class="lb"><i id="lbar"></i><b id="lleaf"></b></div>
+    <p id="ltxt">Waking up the forest…</p>
+    <span id="lpct">0%</span>
   </div>
+  <button id="skip">Skip ▶</button>
+</div>
 
+<div class="app">
+  <header>
+    <div class="brand" id="brand"></div>
+    <nav id="nav" aria-label="Pages"></nav>
+    <a class="contact" id="contact" href="#">Contact</a>
+  </header>
+  <main id="main"></main>
+  <footer>
+    <button id="back">◀ Back</button>
+    <div class="stg" id="stg"></div>
+    <button id="next">Next ▶</button>
+  </footer>
 </div>
 
 <script>
-  let currentPage = 0;
-  const totalPages = 3; // Restricted to 3 pages for teacher review
+/* ============ EDIT YOUR DETAILS HERE ============
+   Put your photos in an "images" folder beside this file.
+   Missing photos show a labelled placeholder, so nothing breaks. */
+const ME = {
+  first: "Jewel Lyn", last: "Camit", initials: "JC",
+  badge: "Hello, I'm",
+  tagline: "A first-year Information Technology student from Tuba, Benguet, ready to learn, build and grow.",
+  facts: [["Program","BS Information Technology"],["School","University of the Cordilleras"],["Year level","1st Year"],["From","Tuba, Benguet"]],
+  email: "jewellyntreashcamit695@gmail.com",
+  fullBody: "images/fullbody.png",          // FULL-BODY photo (transparent PNG looks best)
+  portrait: "images/portrait.jpg",
+  bio: [
+    "I am Jewel Lyn Treash T. Camit, an 18-year-old first-year Bachelor of Science in Information Technology student at the University of the Cordilleras. I am from Km 12 Lasong, Tadiangan, Tuba, Benguet.",
+    "I studied at Cypress Christian Foundation School, Tuba National High School and the University of the Cordilleras for senior high school, and I am still studying at UC for college.",
+    "I am working toward becoming an IT professional who keeps learning and builds useful things for others."
+  ],
+  info: [
+    ["Full name","Jewel Lyn Treash T. Camit"],["Gender","Female"],["Status","Single"],["Age","18"],
+    ["Birthday","December 1, 2007"],["Year level","1st Year"],
+    ["Program","Bachelor of Science in Information Technology"],["College","College of Information Technology and Computer Science"],
+    ["School","University of the Cordilleras"],["Hobbies","Exploring new technology, listening to music, taking photos"],
+    ["Address","Km 12 Lasong, Tadiangan, Tuba, Benguet"],["Email","jewellyntreashcamit695@gmail.com"]
+  ],
+  /* Each school can have several photos; they fade and drift on their own. */
+  schools: [
+    {lvl:"Elementary",name:"Cypress Christian Foundation School",st:"Graduated",imgs:["images/elementary1.jpg","images/elementary2.jpg"]},
+    {lvl:"Junior High",name:"Tuba National High School",st:"Graduated",imgs:["images/junior1.jpg","images/junior2.jpg"]},
+    {lvl:"Senior High",name:"University of the Cordilleras",st:"Graduated",imgs:["images/senior1.jpg","images/senior2.jpg"]},
+    {lvl:"College",name:"University of the Cordilleras",st:"Currently enrolled",now:true,imgs:["images/college1.jpg","images/college2.jpg"]}
+  ],
+  /* Replace with your real academic awards */
+  awards: [["Academic award title","School · Year"],["Academic award title","School · Year"],["Academic award title","School · Year"],["Academic award title","School · Year"]],
+  certs: ["images/award1.jpg","images/award2.jpg","images/award3.jpg","images/award4.jpg"],   // photos of certificates, medals, report cards
+  famText: "The people behind every step of my journey. Use the arrows to browse the photos.",
+  gallery: [
+    {src:"images/family1.jpg",t:"My family",d:"Write a short thank-you or memory for this photo."},
+    {src:"images/family2.jpg",t:"My friends",d:"Write a short caption for this photo."},
+    {src:"images/family3.jpg",t:"My classmates",d:"Write a short caption for this photo."},
+    {src:"images/family4.jpg",t:"Special moment",d:"Write a short caption for this photo."}
+  ]
+};
+const LOAD_MS = 3000;   // loading screen length in milliseconds
+/* ================================================ */
 
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function playSynthSound(freq, duration) {
-    if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-  }
+const PAGES=[["home","Home","Home"],["info","Personal Information","Info"],["ach","Achievements","Awards"],["fam","Family & Friends","Family"]];
+const img=(s,a)=>`<div class="ph" data-ph="Add ${s}"><img src="${s}" alt="${a}" onerror="this.classList.add('missing')"></div>`;
+const li=a=>a.map(x=>`<li>${x[0]}<small>${x[1]}</small></li>`).join("");
+const $=id=>document.getElementById(id);
+let cur=0,g=0;
 
-  function updatePageUI() {
-    playSynthSound(520, 0.12);
-    document.querySelectorAll('.page-view').forEach((page, index) => {
-      if (index === currentPage) { page.classList.add('active'); } else { page.classList.remove('active'); }
-    });
-    document.getElementById('page-num-badge').innerText = `P. ${currentPage + 1}/3`;
-    
-    document.querySelectorAll('.nav-btn').forEach((btn, index) => {
-      if (index < 3) {
-        if (index === currentPage) {
-          btn.className = 'nav-btn px-4 py-2 border-2 border-crimson-neon bg-crimson-primary/40 transition clip-corner-sm text-rose-200 glow-neon font-black cursor-pointer';
-        } else {
-          btn.className = 'nav-btn px-4 py-2 border border-crimson-border hover:border-crimson-neon hover:bg-crimson-primary/25 transition clip-corner-sm text-gray-300 cursor-pointer';
-        }
-      }
-    });
+$("brand").textContent=ME.initials;
+$("contact").href="mailto:"+ME.email;
+$("lname").textContent=ME.first+" "+ME.last;
+$("nav").innerHTML=PAGES.map((p,i)=>`<button data-i="${i}"><span class="l-full">${p[1]}</span><span class="l-short">${p[2]}</span></button>`).join("");
 
-    document.querySelectorAll('.mob-btn').forEach((btn, index) => {
-      if (index === currentPage) {
-        btn.className = 'mob-btn px-3 py-1.5 border border-crimson-neon bg-crimson-primary/40 text-rose-200 clip-corner-sm cursor-pointer';
-      } else {
-        btn.className = 'mob-btn px-3 py-1.5 border border-crimson-border text-gray-300 clip-corner-sm cursor-pointer';
-      }
-    });
+$("main").innerHTML=`
+<section class="page" id="home">
+  <div>
+    <span class="hi">${ME.badge}</span>
+    <h1><span>${ME.first}</span><span class="l2">${ME.last}</span></h1>
+    <p class="tag">${ME.tagline}</p>
+    <div class="facts">${ME.facts.map(f=>`<b>${f[1]}</b>`).join("")}</div>
+    <div class="cta"><button class="btn" data-go="1">Begin ▶</button><button class="btn alt" data-go="2">My journey</button></div>
+  </div>
+  <div class="hero"><div class="halo"></div><div class="pad"></div><span class="lv">Age 18</span>${img(ME.fullBody,"Full-body photo of "+ME.first+" "+ME.last)}</div>
+</section>
+<section class="page" id="info">
+  <div class="panel pic">${img(ME.portrait,"Portrait")}</div>
+  <div class="panel bio"><h2>Autobiography</h2>${ME.bio.map(p=>`<p>${p}</p>`).join("")}</div>
+  <div class="panel"><h2>Personal information</h2><div class="rows">${ME.info.map(r=>`<div><small>${r[0]}</small><span>${r[1]}</span></div>`).join("")}</div></div>
+</section>
+<section class="page" id="ach">
+  <div class="schools">${ME.schools.map(x=>`<div class="school ${x.now?"now":""}"><div class="slides">${x.imgs.map((m,k)=>img(m,x.name).replace('class="ph"',`class="ph${k?"":" on"}"`)).join("")}</div><div class="meta"><b>${x.lvl}</b><small>${x.name}</small><em>${x.st}</em></div></div>`).join("")}</div>
+  <div class="awards"><div class="panel"><h3>Academic awards</h3><ul>${li(ME.awards)}</ul></div><div class="panel reel"><div class="track">${[0,1].map(()=>ME.certs.map(c=>img(c,"Academic record")).join("")).join("")}</div></div></div>
+</section>
+<section class="page" id="fam">
+  <div class="side"><h2>Family &amp; Friends</h2><p>${ME.famText}</p></div>
+  <div class="stage"><div class="frame" id="frame"></div><div class="thumbs" id="thumbs"></div></div>
+</section>`;
 
-    document.querySelectorAll('.page-dot').forEach((dot, index) => {
-      if (index === currentPage) {
-        dot.className = 'page-dot w-4 h-4 rounded-full bg-crimson-neon glow-neon cursor-pointer transition';
-      } else {
-        dot.className = 'page-dot w-4 h-4 rounded-full bg-red-950 border-2 border-crimson-border cursor-pointer transition';
-      }
-    });
-  }
+function gal(i){
+  g=(i+ME.gallery.length)%ME.gallery.length;const it=ME.gallery[g];
+  $("frame").innerHTML=img(it.src,it.t)+`<div class="cap"><h3>${it.t}</h3><p>${it.d}</p></div><button class="arr p" aria-label="Previous photo">◀</button><button class="arr n" aria-label="Next photo">▶</button>`;
+  $("frame").querySelector(".p").onclick=()=>gal(g-1);$("frame").querySelector(".n").onclick=()=>gal(g+1);
+  $("thumbs").innerHTML=ME.gallery.map((x,k)=>`<button aria-label="Photo ${k+1}" aria-current="${k==g}" data-k="${k}">${img(x.src,x.t)}</button>`).join("");
+  $("thumbs").querySelectorAll("button").forEach(b=>b.onclick=()=>gal(+b.dataset.k));
+}
+function go(i){
+  cur=Math.max(0,Math.min(PAGES.length-1,i));
+  document.querySelectorAll(".page").forEach((p,k)=>p.classList.toggle("on",k==cur));
+  document.querySelectorAll("#nav button").forEach((b,k)=>k==cur?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  $("stg").textContent="Page "+(cur+1)+" of "+PAGES.length;
+  $("back").disabled=cur==0;$("next").disabled=cur==PAGES.length-1;
+  document.title=PAGES[cur][1]+" | "+ME.first+" "+ME.last;
+  history.replaceState(null,"","#"+PAGES[cur][0]);
+}
+$("nav").onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
+$("back").onclick=()=>go(cur-1);$("next").onclick=()=>go(cur+1);
+addEventListener("keydown",e=>{if(e.key=="ArrowRight")go(cur+1);if(e.key=="ArrowLeft")go(cur-1)});
+document.querySelectorAll(".school").forEach((c,ci)=>{const l=c.querySelectorAll(".slides .ph");if(l.length<2)return;let k=0;setInterval(()=>{l[k].classList.remove("on");k=(k+1)%l.length;l[k].classList.add("on")},3800+ci*450)});
+gal(0);
+go(Math.max(0,PAGES.findIndex(p=>"#"+p[0]==location.hash)));
 
-  function switchPage(pageIndex) {
-    if (pageIndex >= 0 && pageIndex < totalPages) { currentPage = pageIndex; updatePageUI(); }
-  }
+/* falling petals */
+for(let i=0;i<24;i++){const e=document.createElement("i"),r=Math.random;e.className="petal";
+  e.style.cssText=`left:${r()*100}%;--s:${(.8+r()*1.1).toFixed(2)};--dx:${(8+r()*40).toFixed(0)}vw;animation-duration:${(7+r()*8).toFixed(1)}s;animation-delay:-${(r()*14).toFixed(1)}s`;$("petals").appendChild(e)}
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === 'PageDown') switchPage((currentPage + 1) % totalPages);
-    if (e.key === 'ArrowLeft' || e.key === 'PageUp') switchPage((currentPage - 1 + totalPages) % totalPages);
-  });
-
-  function openImageModal(title, src, desc) {
-    playSynthSound(740, 0.15);
-    document.getElementById('modal-title').innerText = title;
-    document.getElementById('modal-img').src = src;
-    document.getElementById('modal-desc').innerText = desc;
-    document.getElementById('image-modal').classList.remove('opacity-0', 'pointer-events-none');
-  }
-
-  function closeModal(modalId) {
-    playSynthSound(300, 0.1);
-    document.getElementById(modalId).classList.add('opacity-0', 'pointer-events-none');
-  }
-
-  // Three.js 3D WebGL Engine
-  const canvas = document.getElementById('three-canvas');
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  const outerGeo = new THREE.IcosahedronGeometry(3.5, 1);
-  const outerMat = new THREE.MeshBasicMaterial({ color: 0xb91c1c, wireframe: true, transparent: true, opacity: 0.4 });
-  const outerMesh = new THREE.Mesh(outerGeo, outerMat);
-  scene.add(outerMesh);
-
-  const innerGeo = new THREE.IcosahedronGeometry(1.9, 0);
-  const innerMat = new THREE.MeshBasicMaterial({ color: 0xff2a55, wireframe: true, transparent: true, opacity: 0.8 });
-  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-  scene.add(innerMesh);
-
-  const ringGeo = new THREE.TorusGeometry(4.4, 0.02, 16, 100);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0xef4444, transparent: true, opacity: 0.55 });
-  const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-  ringMesh.rotation.x = Math.PI / 2.6;
-  scene.add(ringMesh);
-
-  const particleCount = 300;
-  const particleGeo = new THREE.BufferGeometry();
-  const positions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount * 3; i++) { positions[i] = (Math.random() - 0.5) * 19; }
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const particleMat = new THREE.PointsMaterial({ size: 0.048, color: 0xff2a55, transparent: true, opacity: 0.85 });
-  const particleSystem = new THREE.Points(particleGeo, particleMat);
-  scene.add(particleSystem);
-
-  camera.position.z = 6.0;
-
-  let mouseX = 0, mouseY = 0;
-  window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 0.7;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.7;
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    outerMesh.rotation.x += 0.0028; outerMesh.rotation.y += 0.0048;
-    innerMesh.rotation.x -= 0.0042; innerMesh.rotation.y -= 0.0062;
-    ringMesh.rotation.z += 0.004;
-    ringMesh.rotation.y += 0.002;
-    particleSystem.rotation.y += 0.0012;
-    scene.rotation.y += (mouseX - scene.rotation.y) * 0.05;
-    scene.rotation.x += (-mouseY - scene.rotation.x) * 0.05;
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+/* loading screen */
+const total=matchMedia("(prefers-reduced-motion:reduce)").matches?800:LOAD_MS;
+let t0=null,done=false;
+function finish(){if(done)return;done=true;$("lpct").textContent="100%";$("lbar").style.width="100%";$("lleaf").style.left="100%";$("ltxt").textContent="Welcome!";
+  setTimeout(()=>{$("loader").classList.add("out");document.body.classList.remove("loading");document.body.classList.add("ready");setTimeout(()=>$("loader").remove(),900)},450)}
+function tick(ts){if(done)return;t0=t0||ts;const p=Math.min(1,(ts-t0)/total),n=Math.round(p*100);
+  $("lbar").style.width=n+"%";$("lleaf").style.left=n+"%";$("lpct").textContent=n+"%";
+  $("ltxt").textContent=p<.25?"Waking up the forest…":p<.5?"Chasing the clouds…":p<.75?"Gathering petals…":"Almost there…";
+  p<1?requestAnimationFrame(tick):finish()}
+requestAnimationFrame(tick);
+$("skip").onclick=finish;
 </script>
-
 </body>
 </html>
